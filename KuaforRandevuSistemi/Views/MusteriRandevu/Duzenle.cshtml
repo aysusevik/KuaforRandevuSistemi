@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Musteri Randevu Duzenle";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@model Randevu
+
+@section css{
+
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+
+}
+
+<div class="card card-primary card-outline">
+
+    <div class="card-header">
+        <h3>Randevu Bilgilerini Düzenle</h3>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Duzenle", "MusteriRandevu", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(x => x.randevuID)
+
+            <div class="form-group">
+                <label for="tarih">Randevu Tarihi</label>
+                @Html.TextBoxFor(x => x.tarih, "{0:yyyy-MM-dd}", new { @class = "form-control col-sm-3", type = "date" })
+            </div>
+            <div class="form-group">
+                <label for="saat">Randevu Saati</label>
+                @Html.TextBoxFor(x => x.saat, new { @class = "form-control col-sm-3", type = "time" })
+            </div>
+
+            <div class="form-group">
+                <label for="kullaniciID">İlgilenecek Personel</label>
+                @Html.DropDownListFor(x => x.kullaniciID, ViewBag.PersonelListe as SelectList, "Personel Seçiniz", new { @class = "form-control select2bs4" })
+            </div>
+
+            <div class="form-group">
+                <label for="hizmetID">Yapılacak İşlem</label>
+                @Html.DropDownList("hizmetID", ViewBag.Hizmet as MultiSelectList, "Hizmet Seçiniz", new { @class = "form-control select2", multiple = "multiple" })
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+
+    </div>
+
+</div>
+
+@section js{
+
+    <script src="~/Content/AdminTema/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/select2/js/select2.full.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+
+
+    </script>
+
+}

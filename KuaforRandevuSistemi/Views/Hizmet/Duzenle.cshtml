@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Hizmet Duzenle";
+}
+
+@model Hizmet
+
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3>Hizmet Bilgilerini Düzenle</h3>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Duzenle", "Hizmet", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.hizmetID)
+            <div class="form-group">
+                <label for="ad">Ad</label>
+                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Hizmet Adını Giriniz" })
+
+            </div>
+            <div class="form-group">
+                <label for="süre">Süre</label>
+                @Html.TextBoxFor(x => x.sure, new { @class = "form-control", @placeholder = "İşlem Süresi Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="ucret">Ücret</label>
+                @Html.TextBoxFor(x => x.ucret, new { @class = "form-control", placeholder = "İşlem Ücreti Giriniz", type = "money" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+
+    </div>
+</div>
+

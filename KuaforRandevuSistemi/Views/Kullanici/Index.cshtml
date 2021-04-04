@@ -1,0 +1,36 @@
+﻿@model Kullanici
+
+<div class="card card-info">
+    <div class="card-header">
+        <h3>Kullanıcı Bilgileri</h3>
+
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        
+        <strong><i class="fas fa-user-alt mr-1"></i> Firma Sahibi</strong>
+
+        <p class="text-muted">@Model.ad @Model.soyad</p>
+
+        <hr>
+
+        <strong><i class="far fa-file-alt mr-1"></i> Telefon Numarası </strong>
+
+        <p class="text-muted">@Model.telefonNo</p>
+
+        <hr />
+        <strong><i class="far fa-file-alt mr-1"></i> E-posta Adresi </strong>
+
+        <p class="text-muted">@Model.eposta</p>
+
+        <hr />
+
+        <a href="/Kullanici/Duzenle/@Model.kullaniciID" class="btn btn-info btn-block">
+            <i class="fa fa-edit"></i> <b>Düzenle</b>
+            @*<button type="submit" class="btn btn-info"><i class="fa fa-edit"></i> Düzenle</button>*@
+        </a>
+    </div>
+
+    <!-- /.card-body -->
+</div>
+

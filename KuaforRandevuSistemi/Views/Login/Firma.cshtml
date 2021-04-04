@@ -1,0 +1,132 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kuaför Yönetim Sistemi</title>
+    <!-- custom-theme -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Kuaför Yönetim Sistemi" />
+    @*<script type="application/x-javascript">
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+               function hideURLbar(){ window.scrollTo(0,1); } </script>*@
+    <!-- //custom-theme -->
+    <link href="~/Content/LoginTema/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- js -->
+    <script src="~/Content/LoginTema/js/jquery-1.9.1.min.js"></script>
+    <!--// js -->
+    <link rel="stylesheet" type="text/css" href="~/Content/LoginTema/css/easy-responsive-tabs.css" />
+    <link href="//fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+</head>
+<body class="bg agileinfo">
+    <h1 class="agile_head text-center"> Kuaför Yönetim Sistemi </h1>
+    <div class="w3layouts_main wrap">
+        <!--Horizontal Tab-->
+        <div id="parentHorizontalTab_agile">
+            <ul class="resp-tabs-list hor_1">
+                <li>Giriş Yap</li>
+                <li>Kayıt Ol</li>
+            </ul>
+            <div class="resp-tabs-container hor_1">
+                <div class="w3_agile_login">
+                    @if (ViewBag.Sonuc != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Sonuc
+                        </div>
+                    }
+                    @using (Html.BeginForm("Firma", "Login"))
+                    {
+
+                        <p>E-posta</p>
+                        <input type="email" name="eposta" required="" value="aysusevik23@gmail.com" />
+                        <p>Parola</p>
+                        <input type="password" name="parola" required="" class="password" value="1" />
+                        @*<div class="check">
+                <label class="checkbox w3l"><input type="checkbox" name="checkbox" required="required"><i> </i>Şartları ve koşulları okudum, kabul ediyorum.</label>
+            </div>*@
+                        <input type="submit" value="Giriş Yap" class="agileinfo" />
+
+                        @*<div class="login_w3ls">
+                            <a href="#">Parolanızı mı unuttunuz? </a>
+                        </div>*@
+
+                        <div class="login_w3ls">
+                            <a href="/Login/Musteri">MÜŞTERİ GİRİŞİ YAPMAK İÇİN TIKLAYINIZ. </a>
+                        </div>
+                    }
+                </div>
+                <div class="agile_its_registration">
+                    @*<form action="#" method="post" class="agile_form">*@
+                    @using (Html.BeginForm("FirmaKayit", "Login"))
+                    {
+                        <p>Firma Adı</p>
+                        <input type="text" name="firmaAdi" required="required" />
+                        <p>Adınız</p>
+                        <input type="text" name="ad" required="required" />
+                        <p>Soyadınız</p>
+                        <input type="text" name="soyad" required="required" />
+                        <p>E-postanız</p>
+                        <input type="email" name="eposta" required="required" />
+                        <p>Parola</p>
+                        <input type="password" name="parola" id="password1" required="required">
+                        <p>Parolayı Doğrula</p>
+                        <input type="password" name="parola2" id="password2" required="required">
+                        @*<div class="check w3_agileits">
+                                <label class="checkbox w3"><input type="checkbox" name="checkbox" required="required"><i> </i>Şartları ve koşulları okudum, kabul ediyorum.</label>
+                            </div>*@
+                        <input type="submit" value="Kayıt Ol" />
+                        <input type="reset" value="Sıfırla" />
+                    }
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+        <!-- //Horizontal Tab -->
+    </div>
+    <div class="agileits_w3layouts_copyright text-center">
+        <p>© 2020 Kuaför Yönetim Sistemi. Tüm hakları saklıdır.
+    </div>
+    <!--tabs-->
+    <script src="~/Content/LoginTema/js/easyResponsiveTabs.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Horizontal Tab
+            $('#parentHorizontalTab_agile').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true, // 100% fit in a container
+                tabidentify: 'hor_1', // The tab groups identifier
+                activate: function (event) { // Callback function if tab is switched
+                    var $tab = $(this);
+                    var $info = $('#nested-tabInfo');
+                    var $name = $('span', $info);
+                    $name.text($tab.text());
+                    $info.show();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById("password1").onchange = validatePassword;
+            document.getElementById("password2").onchange = validatePassword;
+        }
+        function validatePassword() {
+            var pass2 = document.getElementById("password2").value;
+            var pass1 = document.getElementById("password1").value;
+            if (pass1 != pass2)
+                document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+            else
+                document.getElementById("password2").setCustomValidity('');
+            //empty string means no validation error
+        }
+
+    </script>
+    <!--//tabs-->
+</body>
+</html>

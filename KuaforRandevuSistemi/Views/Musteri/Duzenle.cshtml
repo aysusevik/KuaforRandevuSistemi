@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Musteri Duzenle";
+}
+
+@model Musteri
+
+
+<div class="card card-primary card-outline">
+
+    <div class="card-header">
+        <h3> Müşteri Bilgilerini Düzenle </h3>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Duzenle", "Musteri", FormMethod.Post, new { enctype = "multipart/form-data" })) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+        {
+            @Html.HiddenFor(x => x.musteriID)
+            <div class="form-group">
+                <label for="ad">Ad</label>
+                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Ad Giriniz" })
+
+            </div>
+            <div class="form-group">
+                <label for="soyad">Soyad</label>
+                @Html.TextBoxFor(x => x.soyad, new { @class = "form-control", @placeholder = "Soyad Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="telefonNo">Telefon Numarası</label>
+                @Html.TextBoxFor(x => x.telefonNo, new { @class = "form-control", placeholder = "Telefon Numarası Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="email">E-posta</label>
+                @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "E-posta Adresinizi Giriniz" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+
+    </div>
+
+</div>
+
+

@@ -1,0 +1,89 @@
+﻿@model Hizmet
+@{
+    ViewBag.Title = "Hizmet";
+    
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hizmetleri Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Yeni Hizmet Ekle</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            @*tablo satırı*@
+                            <th>Hizmet Adı</th>
+                            <th>Süresi</th> @*tablo sütunu*@
+                            <th>Ücreti</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Hizmet hizmet in (List<Hizmet>)ViewBag.HizmetListe) 
+                        {
+                            <tr>
+                                <td>@hizmet.ad </td>
+                                <td>@hizmet.sure dk </td>
+                                <td>@String.Format("{0:F2}",hizmet.ucret) ₺</td> @*₺ -- altgr+T*@
+                                <td>
+                                    <a href="/Hizmet/Duzenle/@hizmet.hizmetID" class="btn btn-sm btn-info">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="/Hizmet/Sil/@hizmet.hizmetID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab_2">
+                @*<div class="card">*@
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>Hizmet Bilgisi Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "Hizmet", FormMethod.Post )) 
+                        {
+                            <div class="form-group">
+                                <label for="ad">Hizmet Adı</label>
+                                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Hizmet Adını Giriniz" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="süre">Süre</label>
+                                @Html.TextBoxFor(x => x.sure, new { @class = "form-control", @placeholder = "İşlem Süresi Giriniz" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ücret">Ücret</label>
+                                @Html.TextBoxFor(x => x.ucret, new { @class = "form-control", @placeholder = "İşlem Ücreti Giriniz", type = "money"})
+                            </div>
+                           
+
+                            <button type="submit" class="btn btn-primary">Ekle</button>
+                        }
+
+                    </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+

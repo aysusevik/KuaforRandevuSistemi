@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Tur Duzenle";
+}
+@model GiderTur
+
+<div class="card card-primary card-outline">
+    @*<div class="card">*@
+        <div class="card-header">
+            <h3>Gider Tür Bilgilerini Düzenle </h3>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm("Duzenle", "GiderTur", FormMethod.Post))
+            {
+                @Html.HiddenFor(x => x.turID);
+                <div class="form-group">
+                    <label for="ad">Gider Tür Adı</label>
+                    @Html.TextBoxFor(x=>x.ad, new { @class="form-control", @place="Tür Adı Giriniz"})
+                </div>
+
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            }
+
+        </div>
+    @*</div>*@
+</div>
+

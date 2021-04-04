@@ -1,0 +1,121 @@
+﻿@model Gider
+@{
+    ViewBag.Title = "Gider";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Giderleri Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Yeni Gider Ekle</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Gider Türü</th>
+                            <th>Ödenecek Tutar</th>
+                            <th>Tarih</th>
+                            <th>Açıklama</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Gider gider in ViewBag.GiderListe)
+                        {
+                            <tr>
+                                <td>@gider.GiderTur.ad</td>
+                                <td>@String.Format("{0:F2}", gider.tutar) ₺</td>
+                                <td>@Convert.ToDateTime(gider.tarih).ToShortDateString()</td>
+                                <td>@gider.aciklama</td>
+                                <td>
+                                    <a href="/Gider/Duzenle/@gider.giderID" class="btn btn-sm btn-info">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="/Gider/Sil/@gider.giderID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane" id="tab_2">
+                <div class="card">
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>Gider Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "Gider", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                <label for="tur">Gider Türü Seç</label>
+                                @Html.DropDownListFor(x => x.turID, ViewBag.GiderTurListe as SelectList, "Gider Türü Seçiniz", new { @class = "form-control select2bs4" })
+                            </div>
+                            <div class="form-group">
+                                <label for="tutar">Tutar</label>
+                                @Html.TextBoxFor(x => x.tutar, new { @class = "form-control", placeholder = "Tutar Giriniz", type = "money" })
+                            </div>
+                            <div class="form-group">
+                                <label for="tarih">Tarih</label>
+                                @Html.TextBoxFor(x => x.tarih, new { @class = "form-control col-sm-3", placeholder = "Tarih Giriniz", type = "date"})
+                            </div>
+                            <div class="form-group">
+                                <label for="aciklama">Açıklama</label>
+                                @Html.TextAreaFor(x => x.aciklama, new { @class = "form-control", placeholder = "Açıklama Ekleyiniz", rows = "5" }) @*5 satırlık alan ayırır.*@
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Ekle</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js{
+
+    <script src="~/Content/AdminTema/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/moment/moment.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+
+
+    </script>
+}

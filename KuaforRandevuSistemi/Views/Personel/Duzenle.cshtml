@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Personel Duzenle";
+}
+
+@model Kullanici
+
+<div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3>Personel Bilgilerini Düzenle</h3>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Duzenle", "Personel", FormMethod.Post)) 
+            {
+                @Html.HiddenFor(x=>x.kullaniciID)
+                <div class="form-group">
+                    <label for="ad">Ad</label>
+                    @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Personel Adı Giriniz" })
+
+                </div>
+                <div class="form-group">
+                    <label for="soyad">Soyad</label>
+                    @Html.TextBoxFor(x => x.soyad, new { @class = "form-control", @placeholder = "Personel Soyadını Giriniz" })
+                </div>
+                <div class="form-group">
+                    <label for="telefonNo">Telefon Numarası</label>
+                    @Html.TextBoxFor(x => x.telefonNo, new { @class = "form-control", @placeholder = "Telefon Numarası Giriniz" })
+                </div>
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    @Html.TextBoxFor(x => x.eposta, new { @class = "form-control", @placeholder = "E-posta Adresinizi Giriniz" })
+                </div>
+                <div class="form-group">
+                    <label for="adres">Adres</label>
+                    @Html.TextAreaFor(x => x.adres, new { @class = "form-control", @placeholder = "Adres Bilgisi Giriniz", rows = "5" })
+                </div>
+                <div class="form-group">
+                    <label for="iseBaslama">İşe Başlama Tarihi</label>
+                    @Html.TextBoxFor(x => x.iseBaslamaTarihi, "{0:yyyy-MM-dd}", new { @class = "form-control", @placeholder = "İşe Başlama Tarihi Giriniz", type = "date" })
+                </div>
+                <div class="form-group">
+                    <label for="istenCikis">İşten Ayrılma Tarihi</label>
+                    @Html.TextBoxFor(x => x.cikisTarihi, "{0:yyyy-MM-dd}", new { @class = "form-control", @placeholder = "İşten Ayrılma Tarihi Giriniz", type = "date" })
+                </div>
+                <div class="form-group">
+                    <label for="maas">Aldığı Maaş</label>
+                    @Html.TextBoxFor(x => x.maas, new { @class = "form-control", @placeholder = "Maaş Bilgisini Giriniz", type = "money" })
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            }
+        </div>
+</div>

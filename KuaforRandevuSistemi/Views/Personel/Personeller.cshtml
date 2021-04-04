@@ -1,0 +1,113 @@
+﻿@model Kullanici
+@{
+    ViewBag.Title = "Kullanici";
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Personelleri Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Yeni Personel Bilgisi Ekle</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Ad Soyad</th>
+                            <th>Telefon Numarası</th>
+                            <th>E-posta</th>
+                            <th>Adres</th>
+                            <th>İşe Başlama - Çıkış Tarihi</th>
+                            <th>Aldığı Maaş</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Kullanici kullanici in(List<Kullanici>)ViewBag.PersonelListe)
+                        {
+                        <tr>
+                            <td>@kullanici.ad @kullanici.soyad </td>
+                            <td>@kullanici.telefonNo</td>
+                            <td>@kullanici.eposta</td>
+                            <td>@kullanici.adres</td>
+                            <td>@(kullanici.iseBaslamaTarihi == null ? "-" : Convert.ToDateTime(kullanici.iseBaslamaTarihi).ToShortDateString() ) / @(kullanici.cikisTarihi == null ? "-" : Convert.ToDateTime(kullanici.cikisTarihi).ToShortDateString()) </td>
+                            <td>@String.Format("{0:F2}",kullanici.maas) ₺</td>
+                            <td>
+                                <a href="/Personel/Izin/@kullanici.kullaniciID" class="btn btn-sm btn-default" title="Personel izinlerini görüntülemek için tıklayınız.">
+                                    <i class="fa fa-list"></i>
+                                </a>
+                                <a href="/Personel/Duzenle/@kullanici.kullaniciID" class="btn btn-sm btn-info" title="Personel bilgilerini düzenlemek için tıklayınız.">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="/Personel/Sil/@kullanici.kullaniciID" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab_2">
+                <div class="card">
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>Personel Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "Personel", FormMethod.Post)) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+                        {
+                            <div class="form-group">
+                                <label for="ad">Ad</label>
+                                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Personel Adı Giriniz" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="soyad">Soyad</label>
+                                @Html.TextBoxFor(x => x.soyad, new { @class = "form-control", @placeholder = "Personel Soyadını Giriniz" })
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonNo">Telefon Numarası</label>
+                                @Html.TextBoxFor(x => x.telefonNo, new { @class = "form-control", @placeholder = "Telefon Numarası Giriniz", type = "number" })
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-posta</label>
+                                @Html.TextBoxFor(x => x.eposta, new { @class = "form-control", @placeholder = "E-posta Adresinizi Giriniz" })
+                            </div>
+                            <div class="form-group">
+                                <label for="adres">Adres</label>
+                                @Html.TextAreaFor(x => x.adres, new { @class = "form-control", @placeholder = "Adres Bilgisi Giriniz", rows = "5" })
+                            </div>
+                            <div class="form-group">
+                                <label for="iseBaslama">İşe Başlama Tarihi</label>
+                                @Html.TextBoxFor(x => x.iseBaslamaTarihi, new { @class = "form-control col-sm-3", @placeholder = "İşe Başlama Tarihi Giriniz", type = "date" })
+                            </div>
+                            <div class="form-group">
+                                <label for="istenCikis">İşten Ayrılma Tarihi</label>
+                                @Html.TextBoxFor(x => x.cikisTarihi, new { @class = "form-control col-sm-3", @placeholder = "İşten Ayrılma Tarihi Giriniz", type = "date" })
+                            </div>
+                            <div class="form-group">
+                                <label for="maas">Aldığı Maaş</label>
+                                @Html.TextBoxFor(x => x.maas, new { @class = "form-control", @placeholder = "Maaş Bilgisini Giriniz", type = "money" })
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Ekle</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

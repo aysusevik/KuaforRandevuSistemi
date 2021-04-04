@@ -1,0 +1,44 @@
+﻿@model Firma
+    @{
+        Kullanici k = Model.Kullanici.Where(x => x.yetkiID == 1).SingleOrDefault();
+    }
+<div class="card card-info">
+    <div class="card-header">
+        <h3>Firma Bilgileri</h3>
+
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <strong><i class="fas fa-book mr-1"></i> Firma Adı</strong>
+
+        <p class="text-muted">@Model.ad </p>
+
+        <hr>
+
+        <strong><i class="fas fa-user-alt mr-1"></i> Firma Sahibi</strong>
+
+        <p class="text-muted">@k.ad @k.soyad</p>
+
+        <hr>
+
+        <strong><i class="fas fa-map-marker-alt mr-1"></i> Adres Bilgisi </strong>
+
+        <p class="text-muted">@Model.adres</p>
+
+        <hr>
+
+        <strong><i class="far fa-file-alt mr-1"></i> İletişim Bilgileri</strong>
+
+        <p class="text-muted">@Model.telefon / @k.telefonNo</p>
+
+        <hr />
+
+        <a href="/Firma/Duzenle/@Model.firmaID" class="btn btn-info btn-block">
+            <i class="fa fa-edit"></i> <b>Düzenle</b>
+            @*<button type="submit" class="btn btn-info"><i class="fa fa-edit"></i> Düzenle</button>*@
+        </a>
+    </div>
+
+    <!-- /.card-body -->
+</div>
+

@@ -1,0 +1,92 @@
+﻿@model Musteri
+@{
+    ViewBag.Title = "Musteri";
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Müşterileri Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Yeni Müşteri Ekle</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            @*tablo satırı*@
+                            <th>Profil Resmi</th>
+                            <th>Ad Soyad</th> @*tablo sütunu*@
+                            <th>Telefon Numarası</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Musteri musteri in (List<Musteri>)ViewBag.MusteriListe) //Musteri tablosundaki müsterileri dolas
+                        {
+                        <tr>
+                            <td><img src="~/Content/Images/Musteri/@musteri.resim" width="40" /></td>
+                            <td>@musteri.ad @musteri.soyad </td>
+                            <td>@musteri.telefonNo</td>
+                            <td><a href="/Musteri/Durum/@musteri.musteriID" class="@(musteri.aktifMi==true ? "btn btn-success" : "btn btn-danger")">@(musteri.aktifMi==true ? "Aktif" : "Pasif")</a></td>
+                            <td>
+                                <a href="/Musteri/Duzenle/@musteri.musteriID" class="btn btn-sm btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="/Musteri/Sil/@musteri.musteriID" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab_2">
+                <div class="card">
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>Müşteri Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+           
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "Musteri", FormMethod.Post, new { enctype = "multipart/form-data" })) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+                        {
+                            <div class="form-group">
+                                <label for="ad">Ad</label>
+                                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Ad Giriniz" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="soyad">Soyad</label>
+                                @Html.TextBoxFor(x => x.soyad, new { @class = "form-control", @placeholder = "Soyad Giriniz" })
+                            </div>
+                            <div class="form-group">
+                                <label for="telefonNo">Telefon Numarası</label>
+                                @Html.TextBoxFor(x => x.telefonNo, new { @class = "form-control", placeholder = "Telefon Numarası Giriniz", type = "number" })
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-posta</label>
+                                @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "E-posta Adresinizi Giriniz" })
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Ekle</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+

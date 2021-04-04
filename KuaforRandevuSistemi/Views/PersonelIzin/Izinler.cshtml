@@ -1,0 +1,134 @@
+﻿@model Izin
+@{
+    ViewBag.Title = "PersonelIzin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">İzin Al</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Onaylanmayan İzinleri Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Onaylanan İzinleri Görüntüle</a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <div class="card">
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>İzin Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "PersonelIzin", FormMethod.Post, new { enctype = "multipart/form-data" })) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+                        {
+                            <div class="form-group">
+                                <label for="izinBaslama">İzin Başlama Tarihi </label>
+                                @Html.TextBoxFor(x => x.baslamaTarihi, new { @class = "form-control col-sm-3", placeholder = "İzin Başlama Tarihi Giriniz", type = "date" })
+                            </div>
+                            <div class="form-group">
+                                <label for="izinBitis">İzin Bitiş Tarihi</label>
+                                @Html.TextBoxFor(x => x.bitisTarihi, new { @class = "form-control col-sm-3", placeholder = "İzin Bitiş Tarihi Giriniz", type = "date" })
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">İzin Talep Et</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab_2">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            @*tablo satırı*@
+                            <th>İzin Başlama Tarihi</th> @*tablo sütunu*@
+                            <th>İzin Bitiş Tarihi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Izin izin in (List<Izin>)ViewBag.IzinListe)
+                        {
+                            <tr>
+                                <td>@izin.baslamaTarihi.Value.ToShortDateString()</td>
+                                <td>@izin.bitisTarihi.Value.ToShortDateString()</td>
+                                @*<td></td>
+                            <td>
+
+                            </td>*@
+                                <td>
+                                    <a href="/PersonelIzin/Sil/@izin.izinID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab_3">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>İzin Başlama Tarihi</th>
+                            <th>İzin Bitiş Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Izin izin in (List<Izin>)ViewBag.IzinListeOnayli)
+                        {
+                            <tr>
+                                <td>@izin.baslamaTarihi.Value.ToShortDateString()</td>
+                                <td>@izin.bitisTarihi.Value.ToShortDateString()</td>                              
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section js{
+
+    <script src="~/Content/AdminTema/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/moment/moment.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+
+
+    </script>
+}
+
+

@@ -1,0 +1,35 @@
+﻿@model Kullanici
+
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3>Kullanıcı Bilgilerini Düzenle</h3>
+    </div>
+    
+    <div class="card-body">
+        @using (Html.BeginForm("Duzenle", "Kullanici", FormMethod.Post, new { enctype = "multipart/form-data" })) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+        {
+            @Html.HiddenFor(x => x.kullaniciID)
+            <div class="form-group">
+                <label for="ad">Yönetici Adı</label>
+                @Html.TextBoxFor(x => x.ad, new { @class = "form-control", @placeholder = "Adınızı Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="adres">Soyadı</label>
+                @Html.TextBoxFor(x => x.soyad, new { @class = "form-control", placeholder = "Soyadınızı Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="telefon">Telefon Numarası</label>
+                @Html.TextBoxFor(x => x.telefonNo, new { @class = "form-control", placeholder = "Telefon Numarası Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="eposta">E-posta Adresi</label>
+                @Html.TextBoxFor(x => x.eposta, new { @class = "form-control", placeholder = "E-posta Adresi Giriniz" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+
+    </div>
+</div>
+

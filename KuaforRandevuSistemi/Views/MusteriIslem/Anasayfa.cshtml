@@ -1,0 +1,149 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    ViewBag.Title = "Anasayfa";
+}
+
+@model List<Randevu>
+
+<h2>Anasayfa</h2>
+
+<div class="card card-solid">
+    <div class="card-body pb-0">
+        <div class="row d-flex align-items-stretch">
+
+            @foreach (Randevu r in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                    <div class="card bg-light">
+                        <div class="card-header text-muted border-bottom-0">
+                            @r.Firma.ad
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="lead"><b>@r.Kullanici.ad @r.Kullanici.soyad </b></h2>
+                                    <p class="text-muted text-sm">
+                                        <b>Yapılan İşlemler: </b>
+                                        @foreach (RandevuHizmet item in r.RandevuHizmet)
+                                        {
+                                            <span> @item.Hizmet.ad /</span>
+                                        }
+                                    </p>
+                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> <b>Adres:</b> @r.Firma.adres</li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> <b>İletişim Bilgileri:</b> @r.Firma.telefon </li>
+                                    </ul>
+                                </div>
+                                <div class="col-5 text-center">
+                                    <img src="/Content/Images/Musteri/bos.png" alt="" class="img-circle img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="text-right">
+                                @if (r.degerlendirme == null)
+                                {
+                                    <a class="btn btn-sm bg-teal deger" data-toggle="modal" data-target="#degerlendirme" data-id="@r.randevuID">
+                                        <i class="fas fa-comments"></i> Değerlendirme
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm bg-teal deger2" data-toggle="modal" data-target="#degerlendirildi" data-id="@r.degerlendirme">
+                                        <i class="fas fa-save"></i> Değerlendirmeyi Göster
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+    <!-- /.card-body -->
+    @*<div class="card-footer">
+            <nav aria-label="Contacts Page Navigation">
+                <ul class="pagination justify-content-center m-0">
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link" href="#">8</a></li>
+                </ul>
+            </nav>
+        </div>*@
+    <!-- /.card-footer -->
+</div>
+
+<div class="modal fade" id="degerlendirme">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("Degerlendir", "MusteriIslem", FormMethod.Post))
+            {
+                <div class="modal-header">
+                    <h4 class="modal-title">Randevu Değerlendirme</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.Hidden("id", "", new { @class = "hidden" })
+                    @Html.TextArea("degerlendirme", new { @class = "form-control" })
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            }
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="degerlendirildi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Randevu Değerlendirme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body b2">
+                @Html.TextArea("degerlendirme2", null, new { @class = "form-control", disabled = true })
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section js{
+
+    <script type="text/javascript">
+
+        $(document).on("click", ".deger", function () {
+            var randevuID = $(this).data('id');
+            $(".modal-body .hidden").val(randevuID);
+        });
+
+        $(document).on("click", ".deger2", function () {
+            var degerlendirme = $(this).data('id');
+            $(".b2 #degerlendirme2").val(degerlendirme);
+        });
+
+    </script>
+
+}

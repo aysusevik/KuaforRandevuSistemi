@@ -1,0 +1,260 @@
+﻿@model Randevu
+@{
+    ViewBag.Title = "Randevu";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/dist/css/adminlte.min.css">
+
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header p-0">
+        @*<h3 class="card-title p-3">Tabs</h3>*@
+        <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Randevuları Görüntüle</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Randevu Talepleri</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Yeni Randevu Oluştur</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab">Geçmiş Randevuları Görüntüle</a></li>
+        </ul>
+    </div><!-- /.card-header -->
+    <div class="card-body"> 
+        <div class="tab-content">
+            <!-- /.tab-pane -->
+            <div class="tab-pane active" id="tab_1">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            @*tablo satırı*@
+                            <th>Randevu Tarihi</th> @*tablo sütunu*@
+                            <th>Saat</th>
+                            <th>Müşteri Bilgisi</th>
+                            <th>İlgilenecek Personel</th>
+                            <th>Yapılacak İşlem</th>
+                            <th>Müşteri Randevuya Geldi mi?</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Randevu randevu in (List<Randevu>)ViewBag.RandevuListe)
+                        {
+                            <tr>
+                                <td>@randevu.tarih.Value.ToShortDateString()</td>
+                                <td>@String.Format("{0:h\\:mm}", randevu.saat)</td>
+                                <td>@randevu.Musteri.ad @randevu.Musteri.soyad </td>
+                                <td>@randevu.Kullanici.ad @randevu.Kullanici.soyad</td>
+                                <td>@foreach (RandevuHizmet rh in randevu.RandevuHizmet)
+                                {
+                                    <span> - @rh.Hizmet.ad -</span>
+                                }</td>
+                                <td>@(randevu.geldiMi == true ? "Geldi" : "Gelmedi")</td>
+                                <td>
+                                    @if (randevu.geldiMi == false)
+                                    {
+                                        <a href="/Randevu/DurumDegistir/@randevu.randevuID" class="btn btn-sm btn-success" title="Müşteri randevuya geldi olarak işaretlemek için tıklayınız.">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Randevu/DurumDegistir/@randevu.randevuID" class="btn btn-sm btn-warning" title="Müşteri randevuya gelmedi olarak işaretlemek için tıklayınız.">
+                                            <i class="far fa-window-close"></i>
+                                        </a>
+                                    }
+                                    <a href="/Randevu/Duzenle/@randevu.randevuID" class="btn btn-sm btn-info">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="/Randevu/Sil/@randevu.randevuID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab_2">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Müşteri Adı/Soyadı</th>
+                            <th>İlgilenecek Personel</th>
+                            <th>Tarih</th>
+                            <th>Saat</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Randevu randevu in (List<Randevu>)ViewBag.MusteriRandevuTalep) //Musteri tablosundaki müsterileri dolas
+                        {
+                            <tr>
+                                <td>@randevu.Musteri.ad @randevu.Musteri.soyad</td>
+                                <td>@randevu.Kullanici.ad @randevu.Kullanici.soyad </td>
+                                <td>@randevu.tarih.Value.ToShortDateString()</td>
+                                <td>@String.Format("{0:h\\:mm}", randevu.saat) </td>
+                                <td>
+                                    <a href="/Randevu/Onayla/@randevu.randevuID" class="btn btn-sm btn-success">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-info">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+                <div class="card">
+                    <div class="card-header">
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <h3>Randevu Ekle</h3>
+                                </td>
+                                <td style="text-align:right;">
+                                    <a href="/Musteri/Musteriler" class="btn btn-primary">Yeni Müşteri Ekle</a>
+                                    @*<button type="submit" class="btn btn-primary" onclick="location='/Musteri/Musteriler'">Yeni Müşteri Ekle</button>*@
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Ekle", "Randevu", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="form-group">
+                                <label for="musteriID">Ad Soyad</label>
+
+                                @*@Html.DropDownListFor(x => x.musteriID, ViewBag.MusteriListe as SelectList, "Müşteri Seçiniz", new { @class = "form-control" })*@
+                                @Html.DropDownListFor(x => x.musteriID, ViewBag.MusteriListe as SelectList, "Müşteri Seçiniz", new { @class = "form-control select2bs4" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="kullaniciID">İlgilenecek Personel</label>
+                                @Html.DropDownListFor(x => x.kullaniciID, ViewBag.PersonelListe as SelectList, "Personel Seçiniz", new { @class = "form-control select2bs4" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hizmetID">Yapılacak İşlem</label>
+                                @Html.DropDownList("hizmetID", ViewBag.Hizmet as SelectList, "Hizmet Seçiniz", new { @class = "form-control select2", multiple = "multiple" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tarih">Randevu Tarihi</label>
+                                @Html.TextBoxFor(x => x.tarih, new { @class = "form-control col-sm-3", type = "date" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="saat">Randevu Saati</label>
+                                @Html.TextBoxFor(x => x.saat, new { @class = "form-control col-sm-3", type = "time" })
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Ekle</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_4">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            @*tablo satırı*@
+                            <th>Randevu Tarihi</th> @*tablo sütunu*@
+                            <th>Saat</th>
+                            <th>Müşteri Bilgisi</th>
+                            <th>İlgilenen Personel</th>
+                            <th>Yapılan İşlem</th>
+                            <th>Müşteri Randevuya Geldi Mi?</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Randevu randevu in (List<Randevu>)ViewBag.GecmisRandevuListe)
+                        {
+                            <tr>
+                                <td>@randevu.tarih.Value.ToShortDateString()</td>
+                                <td>@String.Format("{0:h\\:mm}", randevu.saat)</td>
+                                <td>@randevu.Musteri.ad @randevu.Musteri.soyad </td>
+                                <td>@randevu.Kullanici.ad @randevu.Kullanici.soyad </td>
+                                <td>@foreach (RandevuHizmet rh in randevu.RandevuHizmet)
+                                {
+                                    <span> - @rh.Hizmet.ad - </span>
+                                }</td>
+                                <td>@(randevu.geldiMi == true ? "Geldi" : "Gelmedi") </td>
+                                <td>
+
+                                    @if (randevu.geldiMi == false)
+                                    {
+                                        <a href="/Randevu/DurumDegistir/@randevu.randevuID" class="btn btn-sm btn-success" title="Müşteri randevuya geldi olarak işaretlemek için tıklayınız.">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Randevu/DurumDegistir/@randevu.randevuID" class="btn btn-sm btn-warning" title="Müşteri randevuya gelmedi olarak işaretlemek için tıklayınız.">
+                                            <i class="far fa-window-close"></i>
+                                        </a>
+                                    }
+
+                                    <a href="/Randevu/Duzenle/@randevu.randevuID" class="btn btn-sm btn-info">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="/Randevu/Sil/@randevu.randevuID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <!-- /.tab-content -->
+    </div><!-- /.card-body -->
+</div>
+
+@section js{
+
+    <script src="~/Content/AdminTema/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/moment/moment.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/daterangepicker/daterangepicker.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });            
+        });
+
+       
+
+    </script>
+
+}
+

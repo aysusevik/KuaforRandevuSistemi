@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Gider Duzenle";
+}
+
+@model Gider
+
+@section css{
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Content/AdminTema/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+}
+
+
+<div class="card card-primary card-outline">
+
+    <div class="card-header">
+        <h3> Gider Bilgilerini Düzenle </h3>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm("Duzenle", "Gider", FormMethod.Post, new { enctype = "multipart/form-data" })) //enctype = multiport.. resim, ses gibi dosyalar ekleneceği zaman
+        {
+            @Html.HiddenFor(x => x.giderID)
+            <div class="form-group">
+                <label for="tur">Gider Türü Seç</label>
+                @Html.DropDownListFor(x => x.turID, ViewBag.GiderTurListe as SelectList, "Gider Türü Seçiniz", new { @class = "form-control select2bs4" })
+
+            </div>
+            <div class="form-group">
+                <label for="tutar">Ödenecek Tutar </label>
+                @Html.TextBoxFor(x => x.tutar, new { @class = "form-control", @placeholder = "Tutar Giriniz" })
+            </div>
+            <div class="form-group">
+                <label for="tarih">Tarih</label>
+                @Html.TextBoxFor(x => x.tarih, "{0:yyyy-MM-dd}", new { @class = "form-control", placeholder = "Tarih Giriniz", type = "date" })
+            </div>
+            <div class="form-group">
+                <label for="aciklama">Açıklama</label>
+                @Html.TextAreaFor(x => x.aciklama, new { @class = "form-control", placeholder = "Açıklama Ekleyiniz", rows = "3" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+
+    </div>
+
+</div>
+
+@section js{
+
+    <script src="~/Content/AdminTema/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/select2/js/select2.full.min.js"></script>
+
+    <script src="~/Content/AdminTema/plugins/moment/moment.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+
+
+    </script>
+}
+
+
